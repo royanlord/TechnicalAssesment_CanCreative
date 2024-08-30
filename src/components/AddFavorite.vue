@@ -17,15 +17,15 @@
 <script setup lang="ts">
 import { defineProps, ref, onMounted, defineEmits } from 'vue'
 
-// interface Game {
-//   id: number;
-//   name: string;
-//   background_image: string;
-//   rating: number;
-// }
+interface Game {
+  id: number;
+  name: string;
+  background_image: string;
+  rating: number;
+}
 
 const props = defineProps<{
-  game: Object;
+  game: Game;
 }>();
 
 const emit = defineEmits(['favorite-updated']);
@@ -33,18 +33,18 @@ const emit = defineEmits(['favorite-updated']);
 const isFavorite = ref<{ [key: number]: boolean }>({});
 
 onMounted(() => {
-  const storedFavorites: Object[] = JSON.parse(localStorage.getItem('favorites') || '[]');
-  storedFavorites.forEach((storedGame: Object) => {
+  const storedFavorites: Game[] = JSON.parse(localStorage.getItem('favorites') || '[]');
+  storedFavorites.forEach((storedGame: Game) => {
     isFavorite.value[storedGame.id] = true;
   });
 });
 
-const saveFavorites = (favorites: Object[]) => {
+const saveFavorites = (favorites: Game[]) => {
   localStorage.setItem('favorites', JSON.stringify(favorites));
 };
 
 const toggleFavorite = (game: Object) => {
-  let favorites: Object[] = JSON.parse(localStorage.getItem('favorites') || '[]');
+  let favorites: Game[] = JSON.parse(localStorage.getItem('favorites') || '[]');
 
   if (isFavorite.value[game.id]) {
     favorites = favorites.filter(fav => fav.id !== game.id);

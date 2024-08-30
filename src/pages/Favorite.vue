@@ -4,7 +4,19 @@ import Rating from '@/components/Rating.vue'
 import AddFavorite from '@/components/AddFavorite.vue'
 import CardGame from '@/components/CardGame.vue'
 
-const storedFavorites = ref<Object[]>([]);
+interface Genre {
+    name: string;
+}
+
+interface Game {
+    id: number;
+    name: string;
+    background_image: string;
+    rating: number;
+    genres: Genre[];
+}
+
+const storedFavorites = ref<Game[]>([]);
 
 const updateStoredFavorites = () => {
     storedFavorites.value = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -18,7 +30,7 @@ watch(storedFavorites, (newFavorites) => {
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
 });
 
-const mappingGenres = (game) => {
+const mappingGenres = (game: Game) => {
     return game.genres.map(genre => genre.name).join(', ');
 }
 

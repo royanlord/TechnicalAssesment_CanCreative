@@ -11,6 +11,18 @@ const notFound = ref<boolean>(false)
 const pageSize = ref<number>(10)
 const page = ref<number>(1)
 
+interface Genre {
+    name: string;
+}
+
+interface Game {
+    id: number;
+    name: string;
+    background_image: string;
+    rating: number;
+    genres: Genre[];
+}
+
 const getGames = async (searchQuery: string = '', page: number = 1, pageSize: number = 10) => {
     try {
         // const url = searchQuery
@@ -106,19 +118,19 @@ const searchGames = () => {
         <div class="mx-10 grid lg:grid-cols-4 grid-cols-1 gap-5 mb-5">
             <CardGame :games="gameStore.games" />
         </div>
-        <div className="join w-full flex justify-center mx-auto">
+        <div class="join w-full flex justify-center mx-auto">
             <button 
-                className="join-item btn px-5 bg-slate-700 hover:bg-slate-600"
+                class="join-item btn px-5 bg-slate-700 hover:bg-slate-600"
                 @click="prevPage"
                 :disabled="page === 1"
             >
                 «
             </button>
-            <button className="join-item btn px-8 bg-slate-700 hover:bg-slate-600">
+            <button class="join-item btn px-8 bg-slate-700 hover:bg-slate-600">
                 Page {{ page }}
             </button>
             <button 
-                className="join-item btn px-5 bg-slate-700 hover:bg-slate-600"
+                class="join-item btn px-5 bg-slate-700 hover:bg-slate-600"
                 @click="nextPage"
             >
                 »

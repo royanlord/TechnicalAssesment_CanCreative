@@ -31,17 +31,21 @@ import { defineProps } from 'vue'
 import Rating from '@/components/Rating.vue'
 import AddFavorite from '@/components/AddFavorite.vue'
 
+interface Genre {
+    name: string;
+}
 interface Game {
     id: number;
     name: string;
     background_image: string;
     rating: number;
-    genres: Array<{ name: string }>;
+    genres: Genre[];
+    slug: string;
 }
 
 const props = defineProps<{
     games: Game[];
-    handleFavoriteUpdated?: Function;
+    handleFavoriteUpdated?: (game: Game) => void;
 }>();
 
 const mappingGenres = (game: Game) => {

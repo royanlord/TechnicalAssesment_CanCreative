@@ -8,19 +8,41 @@ import AddFavorite from '@/components/AddFavorite.vue'
 
 const route = useRoute()
 
+interface Genre {
+  name: string;
+}
+
+interface Developer {
+  name: string;
+}
+
+interface Publisher {
+  name: string;
+}
+
 interface Game {
-    id: number;
-    name: string;
-    background_image: string;
-    rating: number;
-    genres: Array<{ name: string }>;
+  id: number;
+  name: string;
+  slug: string;
+  background_image: string;
+  background_image_additional?: string;
+  rating: number;
+  ratings_count: number;
+  reviews_count: number;
+  released: string;
+  updated: string;
+  description_raw: string;
+  genres: Genre[];
+  developers: Developer[];
+  publishers: Publisher[];
+  platforms?: Platform[];
 }
 
 const apiKey = '88d8ad869aca4a1db5bca624337e6f0a'
 
 const detail = useDetailGameStore()
 
-const getGameDetail = async (id: number) => {
+const getGameDetail = async (id: string) => {
   try {
         const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`, {
             method: 'GET'
@@ -30,7 +52,7 @@ const getGameDetail = async (id: number) => {
             throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
+        const data: Game = await response.json();
         console.log(data);
         detail.setDetailGame(data);
     } catch (error) {
@@ -50,25 +72,6 @@ const getDescriptionParagraphs = () => {
     return [];
 };
 
-const getRequirements = (req: string) => {
-    if (req) {
-        // Remove "Minimum:" or "Recommended:" from the string
-        req = req.replace(/^(Minimum|Recommended):/, '').trim();
-        
-        // Split by pattern that matches a lowercase letter followed by an uppercase letter
-        const reqArray = req.split(/(?<=\w)(?=[A-Z])/).map(req => req.trim());
-        const reqObject: { [key: string]: string } = {};
-        reqArray.forEach(item => {
-            const [key, value] = item.split(':');
-            if (key && value) {
-                reqObject[key.trim()] = value.trim();
-            }
-        });
-        return reqObject;
-    }
-    return {};
-};
-
 const releaseDate = computed(() => {
     return dayjs(detail.detailGame.released).format('DD MMM, YYYY');
 });
@@ -77,15 +80,13 @@ const updatedDate = computed(() => {
     return dayjs(detail.detailGame.updated).format('DD MMM, YYYY');
 });
 
-const mappingDeveloper = (developer: Array[]) => {
+const mappingDeveloper = (developer: Developer[]) => {
     return developer.map(dev => dev.name).join(', ');
 }
 
-const mappingPublisher = (publisher: Array[]) => {
+const mappingPublisher = (publisher: Publisher[]) => {
     return publisher.map(pub => pub.name).join(', ');
 }
-
-console.log(detail.detailGame);
 
 </script>
 
@@ -105,7 +106,7 @@ console.log(detail.detailGame);
                 />
                 <div class="mt-5 flex justify-between items-center">
                     <div class="flex gap-2">
-                        <span v-for="genre in detail.detailGame.genres" class="inline bg-slate-900 text-white text-base rounded-xl px-3 py-1">
+                        <span v-for="(genre, index) in detail.detailGame.genres" :key="index" class="inline bg-slate-900 text-white text-base rounded-xl px-3 py-1">
                             {{ genre.name }}
                         </span>
                     </div>
