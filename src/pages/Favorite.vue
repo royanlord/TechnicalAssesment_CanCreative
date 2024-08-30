@@ -58,7 +58,10 @@ const handleFavoriteUpdated = () => {
 </script>
 
 <template>
-    <div class="mx-10 grid lg:grid-cols-4 grid-cols-1 gap-5 mb-5">
+    <div v-if="storedFavorites.length < 1" class="text-center text-gray-400 italic mt-8">
+        No games found. Your havn't favorite game.
+    </div>
+    <div v-else class="mx-10 grid lg:grid-cols-4 grid-cols-1 gap-5 mb-5">
         <CardGame :games="storedFavorites" :handleFavoriteUpdated="handleFavoriteUpdated" />
         <!-- <div v-for="game in storedFavorites" :key="game.id" class="card bg-slate-800 w-full shadow-xl">
             <figure>
