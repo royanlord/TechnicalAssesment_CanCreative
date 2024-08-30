@@ -43,7 +43,7 @@ const saveFavorites = (favorites: Game[]) => {
   localStorage.setItem('favorites', JSON.stringify(favorites));
 };
 
-const toggleFavorite = (game: Object) => {
+const toggleFavorite = (game: Game) => {
   let favorites: Game[] = JSON.parse(localStorage.getItem('favorites') || '[]');
 
   if (isFavorite.value[game.id]) {

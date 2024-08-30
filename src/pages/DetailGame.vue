@@ -31,11 +31,10 @@ interface Game {
   reviews_count: number;
   released: string;
   updated: string;
-  description_raw: string;
+  description_raw?: string;
   genres: Genre[];
   developers: Developer[];
-  publishers: Publisher[];
-  platforms?: Platform[];
+  publishers: Publisher[]
 }
 
 const apiKey = '88d8ad869aca4a1db5bca624337e6f0a'
@@ -52,7 +51,7 @@ const getGameDetail = async (id: string) => {
             throw new Error('Network response was not ok');
         }
 
-        const data: Game = await response.json();
+        const data: any = await response.json();
         console.log(data);
         detail.setDetailGame(data);
     } catch (error) {
@@ -61,15 +60,13 @@ const getGameDetail = async (id: string) => {
 };
 
 onMounted(() => {
-  const gameId = route.params.id;
+  const gameId = route.params.id as string;
   getGameDetail(gameId);
 });
 
 const getDescriptionParagraphs = () => {
-    if (detail.detailGame && detail.detailGame.description_raw) {
-        return detail.detailGame.description_raw.split('\n\n').map(paragraph => paragraph.trim());
-    }
-    return [];
+    return detail.detailGame?.description_raw
+        ? detail.detailGame.description_raw.split('\n\n').map(paragraph => paragraph.trim()) : [];
 };
 
 const releaseDate = computed(() => {
@@ -101,7 +98,7 @@ const mappingPublisher = (publisher: Publisher[]) => {
             <figure>
                 <img
                     :src="detail.detailGame.background_image"
-                    :alt="detail.detailGame.slug"
+                    :alt="detail.detailGame.slug ? detail.detailGame.slug : ''"
                     class="w-full h-auto mt-5 rounded-lg"
                 />
                 <div class="mt-5 flex justify-between items-center">
