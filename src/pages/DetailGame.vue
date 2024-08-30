@@ -51,7 +51,7 @@ const getGameDetail = async (id: string) => {
             throw new Error('Network response was not ok');
         }
 
-        const data: any = await response.json();
+        const data = await response.json();
         console.log(data);
         detail.setDetailGame(data);
     } catch (error) {
@@ -65,24 +65,24 @@ onMounted(() => {
 });
 
 const getDescriptionParagraphs = () => {
-    return detail.detailGame?.description_raw
-        ? detail.detailGame.description_raw.split('\n\n').map(paragraph => paragraph.trim()) : [];
+    const description = detail.detailGame?.description_raw || '';
+    return description.split('\n\n').map(paragraph => paragraph.trim());
 };
 
 const releaseDate = computed(() => {
-    return dayjs(detail.detailGame.released).format('DD MMM, YYYY');
+    return dayjs(detail.detailGame?.released).format('DD MMM, YYYY');
 });
 
 const updatedDate = computed(() => {
-    return dayjs(detail.detailGame.updated).format('DD MMM, YYYY');
+    return dayjs(detail.detailGame?.updated).format('DD MMM, YYYY');
 });
 
-const mappingDeveloper = (developer: Developer[]) => {
-    return developer.map(dev => dev.name).join(', ');
+const mappingDeveloper = (developer: Developer[] | undefined) => {
+    return developer?.map(dev => dev.name).join(', ') || 'N/A';
 }
 
-const mappingPublisher = (publisher: Publisher[]) => {
-    return publisher.map(pub => pub.name).join(', ');
+const mappingPublisher = (publisher: Publisher[] | undefined) => {
+    return publisher?.map(pub => pub.name).join(', ') || 'N/A';
 }
 
 </script>
@@ -118,8 +118,8 @@ const mappingPublisher = (publisher: Publisher[]) => {
             <div>
                 <figure>
                     <img
-                        :src="detail.detailGame.background_image_additional"
-                        :alt="detail.detailGame.slug"
+                        :src="detail.detailGame?.background_image_additional"
+                        :alt="detail.detailGame?.slug"
                         class="w-80 h-auto mt-5 rounded-lg"
                     />
                 </figure>
@@ -128,7 +128,7 @@ const mappingPublisher = (publisher: Publisher[]) => {
                         <tr valign="top">
                             <td>All Reviews</td>
                             <td class='lg:px-3 pe-3 ps-12'>:</td>
-                            <td>{{ detail.detailGame.reviews_count }}</td>
+                            <td>{{ detail.detailGame?.reviews_count }}</td>
                         </tr>
                         <tr valign="top">
                             <td>Release Date</td>
@@ -144,14 +144,14 @@ const mappingPublisher = (publisher: Publisher[]) => {
                             <td>Developer</td>
                             <td class='lg:px-3 pe-3 ps-12'>:</td>
                             <td>
-                                {{ mappingDeveloper(detail.detailGame.developers) }}
+                                {{ mappingDeveloper(detail.detailGame?.developers) }}
                             </td>
                         </tr>
                         <tr valign="top">
                             <td>Publisher</td>
                             <td class='lg:px-3 pe-3 ps-12'>:</td>
                             <td>
-                                {{ mappingPublisher(detail.detailGame.publishers) }}
+                                {{ mappingPublisher(detail.detailGame?.publishers) }}
                             </td>
                         </tr>
                     </tbody>

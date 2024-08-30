@@ -15,12 +15,29 @@ interface Genre {
     name: string;
 }
 
+interface Developer {
+  name: string;
+}
+
+interface Publisher {
+  name: string;
+}
+
 interface Game {
-    id: number;
-    name: string;
-    background_image: string;
-    rating: number;
-    genres: Genre[];
+  id: number;
+  name: string;
+  slug: string;
+  background_image: string;
+  background_image_additional?: string;
+  rating: number;
+  ratings_count: number;
+  reviews_count: number;
+  released: string;
+  updated: string;
+  description_raw?: string;
+  genres: Genre[];
+  developers: Developer[];
+  publishers: Publisher[]
 }
 
 const getGames = async (searchQuery: string = '', page: number = 1, pageSize: number = 10) => {

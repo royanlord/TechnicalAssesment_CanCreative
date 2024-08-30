@@ -32,15 +32,32 @@ import Rating from '@/components/Rating.vue'
 import AddFavorite from '@/components/AddFavorite.vue'
 
 interface Genre {
-    name: string;
+  name: string;
 }
+
+interface Developer {
+  name: string;
+}
+
+interface Publisher {
+  name: string;
+}
+
 interface Game {
-    id: number;
-    name: string;
-    background_image: string;
-    rating: number;
-    genres: Genre[];
-    slug: string;
+  id: number;
+  name: string;
+  slug?: string;
+  background_image: string;
+  background_image_additional?: string;
+  rating: number;
+  ratings_count: number;
+  reviews_count: number;
+  released?: string;
+  updated?: string;
+  description_raw?: string;
+  genres: Genre[];
+  developers?: Developer[];
+  publishers?: Publisher[]
 }
 
 const props = defineProps<{
