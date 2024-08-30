@@ -37,13 +37,11 @@ interface Game {
   publishers: Publisher[]
 }
 
-const apiKey = '88d8ad869aca4a1db5bca624337e6f0a'
-
 const detail = useDetailGameStore()
 
 const getGameDetail = async (id: string) => {
   try {
-        const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`, {
+        const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${import.meta.env.VITE_API_KEY}`, {
             method: 'GET'
         })
 

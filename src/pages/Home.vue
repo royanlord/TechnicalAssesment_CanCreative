@@ -4,7 +4,6 @@ import { computed, ref, onMounted } from 'vue'
 import CardGame from '@/components/CardGame.vue'
 import { useGameStore } from '@/stores/gameStore'
 
-const apiKey = '88d8ad869aca4a1db5bca624337e6f0a'
 const gameStore = useGameStore();
 const searchQuery = ref<string>('')
 const notFound = ref<boolean>(false)
@@ -46,8 +45,8 @@ const getGames = async (searchQuery: string = '', page: number = 1, pageSize: nu
         //     ? `https://api.rawg.io/api/games?search=${searchQuery}&key=${apiKey}`
         //     : `https://api.rawg.io/api/games?key=${apiKey}`;
         const url = searchQuery
-            ? `https://api.rawg.io/api/games?search=${searchQuery}&page=${page}&page_size=${pageSize}&key=${apiKey}`
-            : `https://api.rawg.io/api/games?page=${page}&page_size=${pageSize}&key=${apiKey}`;
+            ? `https://api.rawg.io/api/games?search=${searchQuery}&page=${page}&page_size=${pageSize}&key=${import.meta.env.VITE_API_KEY}`
+            : `https://api.rawg.io/api/games?page=${page}&page_size=${pageSize}&key=${import.meta.env.VITE_API_KEY}`;
             
         const response = await fetch(url, {
             method: 'GET'
